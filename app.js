@@ -2,8 +2,9 @@
 const FMT = new Intl.NumberFormat('fr-FR');
 const money = n => FMT.format(Math.round(n || 0)) + ' F';
 const num1  = n => FMT.format(Math.round((n || 0) * 10) / 10);
-const PALETTE = ['#2dd4bf','#60a5fa','#f59e0b','#34d399','#f87171','#a78bfa',
-                 '#fb7185','#38bdf8','#facc15','#4ade80','#c084fc','#fca5a5'];
+// palette sobre : bleu pétrole principal + neutres, ambre/vert réservés au carburant
+const C = { primary:'#2f6f8f', primaryLite:'#7aa7bd', slate:'#64748b',
+            gas:'#c77b30', ess:'#3f9d6d', neutral:'#b6c0cc' };
 
 let RAW = [];           // toutes les recharges
 let charts = {};        // instances Chart.js
@@ -106,8 +107,8 @@ function makeChart(id, cfg){
   if (charts[id]) charts[id].destroy();
   charts[id] = new Chart($('#' + id), cfg);
 }
-const gridColor = 'rgba(154,167,189,.12)';
-const tickColor = '#9aa7bd';
+const gridColor = 'rgba(31,42,58,.08)';
+const tickColor = '#6b7787';
 const axes = (horizontal=false) => ({
   x:{grid:{color:gridColor},ticks:{color:tickColor}},
   y:{grid:{color:gridColor},ticks:{color:tickColor}}
@@ -118,7 +119,7 @@ function renderRegion(rows){
   const keys = Object.keys(m).sort((a,b)=>m[b]-m[a]);
   makeChart('chRegion', {
     type:'bar',
-    data:{labels:keys,datasets:[{data:keys.map(k=>m[k]),backgroundColor:'#60a5fa',borderRadius:6}]},
+    data:{labels:keys,datasets:[{data:keys.map(k=>m[k]),backgroundColor:C.primary,borderRadius:6}]},
     options:{plugins:{legend:{display:false}},scales:axes()}
   });
 }
@@ -126,10 +127,10 @@ function renderRegion(rows){
 function renderType(rows){
   const m = groupSum(rows, 'TypeCarburant', r => r.QttRecharge);
   const keys = Object.keys(m);
-  const colors = keys.map(k => k === 'Gasoil' ? '#f59e0b' : k === 'Essence' ? '#34d399' : '#9aa7bd');
+  const colors = keys.map(k => k === 'Gasoil' ? C.gas : k === 'Essence' ? C.ess : C.neutral);
   makeChart('chType', {
     type:'doughnut',
-    data:{labels:keys.map(k=>`${k} (${num1(m[k])} L)`),datasets:[{data:keys.map(k=>m[k]),backgroundColor:colors,borderColor:'#17202f',borderWidth:2}]},
+    data:{labels:keys.map(k=>`${k} (${num1(m[k])} L)`),datasets:[{data:keys.map(k=>m[k]),backgroundColor:colors,borderColor:'#ffffff',borderWidth:2}]},
     options:{plugins:{legend:{position:'bottom',labels:{color:tickColor}}}}
   });
 }
@@ -142,8 +143,8 @@ function renderTime(rows){
   makeChart('chTime', {
     type:'line',
     data:{labels:days,datasets:[
-      {label:'Litres',data:days.map(d=>byDay[d].l),borderColor:'#2dd4bf',backgroundColor:'rgba(45,212,191,.15)',fill:true,tension:.3,yAxisID:'y'},
-      {label:'Montant (F)',data:days.map(d=>byDay[d].m),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.1)',fill:false,tension:.3,yAxisID:'y1'}
+      {label:'Litres',data:days.map(d=>byDay[d].l),borderColor:C.primary,backgroundColor:'rgba(47,111,143,.12)',fill:true,tension:.3,yAxisID:'y'},
+      {label:'Montant (F)',data:days.map(d=>byDay[d].m),borderColor:C.gas,backgroundColor:'rgba(199,123,48,.08)',fill:false,tension:.3,yAxisID:'y1'}
     ]},
     options:{plugins:{legend:{labels:{color:tickColor}}},
       scales:{x:{grid:{color:gridColor},ticks:{color:tickColor}},
@@ -157,7 +158,7 @@ function renderVeh(rows){
   const keys = Object.keys(m).sort((a,b)=>m[b]-m[a]).slice(0,10);
   makeChart('chVeh', {
     type:'bar',
-    data:{labels:keys,datasets:[{data:keys.map(k=>m[k]),backgroundColor:'#a78bfa',borderRadius:6}]},
+    data:{labels:keys,datasets:[{data:keys.map(k=>m[k]),backgroundColor:C.slate,borderRadius:6}]},
     options:{indexAxis:'y',plugins:{legend:{display:false}},scales:axes()}
   });
 }
@@ -168,7 +169,7 @@ function renderResp(rows){
   const keys = Object.keys(m).sort((a,b)=>m[b]-m[a]);
   makeChart('chResp', {
     type:'bar',
-    data:{labels:keys,datasets:[{data:keys.map(k=>m[k]),backgroundColor:'#34d399',borderRadius:6}]},
+    data:{labels:keys,datasets:[{data:keys.map(k=>m[k]),backgroundColor:C.primaryLite,borderRadius:6}]},
     options:{plugins:{legend:{display:false}},scales:axes()}
   });
 }
