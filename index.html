@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suivi Carburant — EHCVM III Phase II</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">⛽</span>
+    <div>
+      <h1>Suivi du carburant</h1>
+      <p class="sub">EHCVM III — Phase II · ANSD</p>
+    </div>
+  </div>
+  <div class="meta">
+    <span id="exportDate">—</span>
+    <button id="reloadBtn" title="Recharger les données">↻</button>
+  </div>
+</header>
+
+<main>
+  <!-- Filtres -->
+  <section class="filters">
+    <label>Région
+      <select id="fRegion"><option value="">Toutes</option></select>
+    </label>
+    <label>Carburant
+      <select id="fType"><option value="">Tous</option></select>
+    </label>
+    <label>Équipe / Agent
+      <select id="fResp"><option value="">Tous</option></select>
+    </label>
+    <label>Statut
+      <select id="fStatut"><option value="">Tous</option></select>
+    </label>
+    <label class="search">Recherche
+      <input id="fSearch" type="search" placeholder="véhicule, chauffeur, lieu…">
+    </label>
+    <button id="resetBtn" class="ghost">Réinitialiser</button>
+  </section>
+
+  <!-- KPIs -->
+  <section class="kpis" id="kpis"></section>
+
+  <!-- Graphiques -->
+  <section class="grid">
+    <div class="card"><h3>Montant par région (FCFA)</h3><canvas id="chRegion"></canvas></div>
+    <div class="card"><h3>Litres par type de carburant</h3><canvas id="chType"></canvas></div>
+    <div class="card wide"><h3>Évolution quotidienne</h3><canvas id="chTime"></canvas></div>
+    <div class="card"><h3>Top véhicules (FCFA)</h3><canvas id="chVeh"></canvas></div>
+    <div class="card"><h3>Recharges par équipe / agent</h3><canvas id="chResp"></canvas></div>
+  </section>
+
+  <!-- Tableau détaillé -->
+  <section class="card tablecard">
+    <div class="tablehead">
+      <h3>Détail des recharges (<span id="rowCount">0</span>)</h3>
+      <button id="csvBtn" class="ghost">Exporter CSV</button>
+    </div>
+    <div class="tablewrap">
+      <table id="dataTable">
+        <thead><tr>
+          <th>Date</th><th>Région</th><th>Département</th><th>Lieu</th>
+          <th>Véhicule</th><th>Chauffeur</th><th>Carburant</th>
+          <th class="num">Litres</th><th class="num">Montant</th><th class="num">Km</th>
+          <th>Agent</th><th>Équipe</th><th>Statut</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Données issues du questionnaire Survey Solutions « GESTION CARBURANT EHCVM III - Phase II ».
+     Régénérer : <code>python export_carburant.py</code> puis pousser <code>data/carburant.json</code>.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
