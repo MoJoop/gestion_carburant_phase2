@@ -180,9 +180,13 @@ function renderTable(rows){
   const cell = v => (v == null || v === '') ? '<span class="empty">—</span>' : v;
   const carb = t => t === 'Gasoil' ? '<span class="tag-gas">Gasoil</span>'
                   : t === 'Essence' ? '<span class="tag-ess">Essence</span>' : cell(t);
-  const badge = s => s === 'COMPLETED' || s === 'Completed'
-        ? '<span class="badge done">Terminé</span>'
-        : '<span class="badge prog">En cours</span>';
+  const badge = s => {
+    const u = (s || '').toUpperCase();
+    if (u.startsWith('APPROVED'))  return '<span class="badge ok">Validé</span>';
+    if (u.startsWith('REJECTED'))  return '<span class="badge rej">Rejeté</span>';
+    if (u === 'COMPLETED')         return '<span class="badge done">Terminé</span>';
+    return '<span class="badge prog">En cours</span>';
+  };
   $('#dataTable tbody').innerHTML = sorted.map(r => `<tr>
     <td>${cell((r.date||'').slice(0,16))}</td>
     <td>${cell(r.Region)}</td><td>${cell(r.Departement)}</td><td>${cell(r.LieuExact)}</td>
