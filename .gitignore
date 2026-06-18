@@ -6,3 +6,5 @@ env/
 .DS_Store
 Thumbs.db
 logs/
+_factures_build/
+_factures_binary.zip

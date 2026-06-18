@@ -57,6 +57,17 @@ button.ghost:hover{border-color:var(--primary);background:var(--primary-soft)}
 .card.wide{grid-column:1/-1}
 .card canvas{max-height:300px}
 
+.facturecard{margin-bottom:18px}
+.btn-dl{background:var(--primary);color:#fff;border:none;border-radius:8px;
+  padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:.15s}
+.btn-dl:hover{background:#27607c}
+.facgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:6px}
+.facbtn{display:flex;flex-direction:column;gap:3px;text-decoration:none;
+  background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:11px 13px;transition:.15s}
+.facbtn:hover{border-color:var(--primary);background:var(--primary-soft)}
+.facname{color:var(--txt);font-weight:600;font-size:13.5px}
+.faccount{color:var(--muted);font-size:11.5px}
+.facmeta{color:var(--soft);font-size:12px;margin:12px 0 0}
 .tablecard{margin-bottom:30px}
 .tablehead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .tablewrap{overflow:auto;max-height:520px;border:1px solid var(--line);border-radius:10px}

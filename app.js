@@ -226,6 +226,27 @@ $('#resetBtn').addEventListener('click', () => {
 $('#reloadBtn').addEventListener('click', load);
 $('#csvBtn').addEventListener('click', exportCsv);
 
+async function loadFactures(){
+  const card = $('#facturecard');
+  try{
+    const res = await fetch('factures/factures_index.json?_=' + Date.now());
+    if(!res.ok) throw new Error('no index');
+    const idx = await res.json();
+    const g = $('#facGlobal');
+    g.href = 'factures/' + idx.global.fichier;
+    g.textContent = `⬇ Tout (${idx.total_factures} factures · ${idx.global.taille_mo} Mo)`;
+    $('#facGrid').innerHTML = idx.equipes.map(e =>
+      `<a class="facbtn" href="factures/${e.fichier}" download>
+         <span class="facname">${e.label}</span>
+         <span class="faccount">${e.nb} facture${e.nb>1?'s':''} · ${e.taille_mo} Mo</span>
+       </a>`).join('');
+    $('#facMeta').textContent = 'Photos regroupées par équipe · générées le ' + idx.date_generation;
+  }catch(e){
+    card.style.display = 'none';   // pas encore de factures publiées
+  }
+}
+loadFactures();
+
 load().catch(e => {
   document.querySelector('main').innerHTML =
     '<div class="card"><h3>Erreur de chargement</h3><p class="empty">Impossible de lire data/carburant.json : ' + e + '</p></div>';

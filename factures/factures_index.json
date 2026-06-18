@@ -1,0 +1,227 @@
+{
+ "date_generation": "2026-06-18 12:01:45",
+ "total_factures": 193,
+ "equipes": [
+  {
+   "id": "eq1",
+   "label": "Équipe 1",
+   "fichier": "eq1.zip",
+   "nb": 6,
+   "taille_mo": 0.4
+  },
+  {
+   "id": "eq5",
+   "label": "Équipe 5",
+   "fichier": "eq5.zip",
+   "nb": 5,
+   "taille_mo": 0.33
+  },
+  {
+   "id": "eq6",
+   "label": "Équipe 6",
+   "fichier": "eq6.zip",
+   "nb": 8,
+   "taille_mo": 0.65
+  },
+  {
+   "id": "eq10",
+   "label": "Équipe 10",
+   "fichier": "eq10.zip",
+   "nb": 2,
+   "taille_mo": 0.3
+  },
+  {
+   "id": "eq11",
+   "label": "Équipe 11",
+   "fichier": "eq11.zip",
+   "nb": 9,
+   "taille_mo": 1.15
+  },
+  {
+   "id": "eq12",
+   "label": "Équipe 12",
+   "fichier": "eq12.zip",
+   "nb": 4,
+   "taille_mo": 0.38
+  },
+  {
+   "id": "eq13",
+   "label": "Équipe 13",
+   "fichier": "eq13.zip",
+   "nb": 9,
+   "taille_mo": 1.13
+  },
+  {
+   "id": "eq14",
+   "label": "Équipe 14",
+   "fichier": "eq14.zip",
+   "nb": 9,
+   "taille_mo": 0.96
+  },
+  {
+   "id": "eq16",
+   "label": "Équipe 16",
+   "fichier": "eq16.zip",
+   "nb": 14,
+   "taille_mo": 1.97
+  },
+  {
+   "id": "eq17",
+   "label": "Équipe 17",
+   "fichier": "eq17.zip",
+   "nb": 5,
+   "taille_mo": 0.63
+  },
+  {
+   "id": "eq18",
+   "label": "Équipe 18",
+   "fichier": "eq18.zip",
+   "nb": 6,
+   "taille_mo": 0.87
+  },
+  {
+   "id": "eq19",
+   "label": "Équipe 19",
+   "fichier": "eq19.zip",
+   "nb": 9,
+   "taille_mo": 1.01
+  },
+  {
+   "id": "eq20",
+   "label": "Équipe 20",
+   "fichier": "eq20.zip",
+   "nb": 8,
+   "taille_mo": 1.75
+  },
+  {
+   "id": "eq21",
+   "label": "Équipe 21",
+   "fichier": "eq21.zip",
+   "nb": 6,
+   "taille_mo": 0.92
+  },
+  {
+   "id": "eq22",
+   "label": "Équipe 22",
+   "fichier": "eq22.zip",
+   "nb": 2,
+   "taille_mo": 0.42
+  },
+  {
+   "id": "eq23",
+   "label": "Équipe 23",
+   "fichier": "eq23.zip",
+   "nb": 2,
+   "taille_mo": 0.26
+  },
+  {
+   "id": "eq24",
+   "label": "Équipe 24",
+   "fichier": "eq24.zip",
+   "nb": 1,
+   "taille_mo": 0.18
+  },
+  {
+   "id": "eq25",
+   "label": "Équipe 25",
+   "fichier": "eq25.zip",
+   "nb": 3,
+   "taille_mo": 0.64
+  },
+  {
+   "id": "eq26",
+   "label": "Équipe 26",
+   "fichier": "eq26.zip",
+   "nb": 7,
+   "taille_mo": 1.5
+  },
+  {
+   "id": "eq27",
+   "label": "Équipe 27",
+   "fichier": "eq27.zip",
+   "nb": 4,
+   "taille_mo": 0.88
+  },
+  {
+   "id": "eq28",
+   "label": "Équipe 28",
+   "fichier": "eq28.zip",
+   "nb": 4,
+   "taille_mo": 0.6
+  },
+  {
+   "id": "eq29",
+   "label": "Équipe 29",
+   "fichier": "eq29.zip",
+   "nb": 5,
+   "taille_mo": 1.18
+  },
+  {
+   "id": "eq31",
+   "label": "Équipe 31",
+   "fichier": "eq31.zip",
+   "nb": 1,
+   "taille_mo": 0.06
+  },
+  {
+   "id": "eq33",
+   "label": "Équipe 33",
+   "fichier": "eq33.zip",
+   "nb": 6,
+   "taille_mo": 0.77
+  },
+  {
+   "id": "eq34",
+   "label": "Équipe 34",
+   "fichier": "eq34.zip",
+   "nb": 8,
+   "taille_mo": 1.47
+  },
+  {
+   "id": "diakhou_int",
+   "label": "diakhou_int",
+   "fichier": "diakhou_int.zip",
+   "nb": 9,
+   "taille_mo": 1.67
+  },
+  {
+   "id": "dieynaba_int",
+   "label": "dieynaba_int",
+   "fichier": "dieynaba_int.zip",
+   "nb": 15,
+   "taille_mo": 1.75
+  },
+  {
+   "id": "ibrahima_gningue_int",
+   "label": "ibrahima_gningue_int",
+   "fichier": "ibrahima_gningue_int.zip",
+   "nb": 6,
+   "taille_mo": 1.24
+  },
+  {
+   "id": "jean_pierre_int",
+   "label": "jean_pierre_int",
+   "fichier": "jean_pierre_int.zip",
+   "nb": 8,
+   "taille_mo": 1.62
+  },
+  {
+   "id": "mamadou_traore_int",
+   "label": "mamadou_traore_int",
+   "fichier": "mamadou_traore_int.zip",
+   "nb": 4,
+   "taille_mo": 0.92
+  },
+  {
+   "id": "thimbane_int",
+   "label": "thimbane_int",
+   "fichier": "thimbane_int.zip",
+   "nb": 8,
+   "taille_mo": 0.58
+  }
+ ],
+ "global": {
+  "fichier": "factures_global.zip",
+  "taille_mo": 28.19
+ }
+}

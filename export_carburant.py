@@ -48,14 +48,15 @@ def to_num(v):
 QUERY = """query($w:String!,$skip:Int!,$take:Int!){
   interviews(workspace:$w, skip:$skip, take:$take,
     where:{questionnaireId:{eq:"%s"}, questionnaireVersion:{eq:%d}}){
-    nodes{ id status responsibleName questionnaireVersion updateDateUtc }
+    nodes{ id key status responsibleName questionnaireVersion updateDateUtc }
   }
 }""" % (GUID_DASH, VER)
 
 def list_interviews():
     """Liste TOUTES les interviews v2 via GraphQL (l'endpoint REST /interviews
-    est plafonné à 10 et ignore offset). Pagination skip/take."""
-    out, skip, take = [], 0, 200
+    est plafonné à 10 et ignore offset). Pagination skip/take.
+    NB: le serveur GraphQL plafonne 'take' à 100 → ne pas demander plus."""
+    out, skip, take = [], 0, 100
     while True:
         r = graphql(QUERY, {"w": WS, "skip": skip, "take": take})
         if r.status_code != 200:
@@ -76,7 +77,7 @@ def list_interviews():
 KEEP = ["date", "TypeAgent", "NomEqTechnique", "NomEqAgent", "Region", "Departement",
         "matricule", "NomChauff", "TypeCarburant", "LieuExact", "Kilometrage",
         "QttRecharge", "MontRecharge", "EquipeCharg", "Soldecarte", "RegionDes",
-        "ObserCarb", "Observation", "CoordGps"]
+        "ObserCarb", "Observation", "CoordGps", "Photfacture", "VoirPhoto"]
 NUMS = {"Kilometrage", "QttRecharge", "MontRecharge", "Soldecarte"}
 
 def detail(iid):
@@ -101,6 +102,7 @@ def main():
         iid = it.get("id")
         rec = detail(iid)
         rec["interviewId"]   = iid
+        rec["key"]           = it.get("key")
         rec["status"]        = it.get("status")
         rec["responsable"]   = it.get("responsibleName")
         rec["lastEntryDate"] = it.get("updateDateUtc")
