@@ -12,6 +12,8 @@ Survey Solutions **« GESTION CARBURANT EHCVM III - Phase II »** (ANSD).
 | `index.html` / `style.css` / `app.js` | Tableau de bord statique (Chart.js) |
 | `data/carburant.json` | Données exportées depuis Survey Solutions |
 | `export_carburant.py` | Script d'export API → `data/carburant.json` |
+| `telecharger_factures.py` | Télécharge les photos de factures, les regroupe par équipe → `factures/*.zip` |
+| `factures/` | ZIP des factures (un par équipe + global) + `factures_index.json` |
 
 ## Indicateurs
 
@@ -33,6 +35,20 @@ git push
 ```
 
 Le dashboard se met à jour automatiquement après le `push` (GitHub Pages).
+
+## Mettre à jour les factures (photos)
+
+```bash
+python telecharger_factures.py          # export binaire SuSo → recompression → factures/*.zip
+git add factures && git commit -m "maj factures" && git push
+```
+
+Les photos sont recompressées (max 1600 px, JPEG q=70) pour tenir sous la limite
+GitHub de 100 Mo/fichier. Un ZIP global + un ZIP par équipe (`eq*.zip`) sont produits,
+avec des boutons de téléchargement sur le dashboard.
+
+> ⚠️ Les factures sont publiées sur un site **public** (toute personne ayant l'URL
+> peut les télécharger). Pour un usage confidentiel, ne pas pousser le dossier `factures/`.
 
 ## Détails techniques
 
