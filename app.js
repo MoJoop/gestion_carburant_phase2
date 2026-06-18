@@ -216,6 +216,66 @@ function exportCsv(){
   a.click();
 }
 
+/* ---- Export Excel : par agent + par superviseur + détail ---- */
+function supLabel(resp){
+  if(!resp) return '—';
+  const m = resp.match(/^EQ(\d+)_/i);
+  return m ? 'EQ' + m[1] : resp;   // EQ13_enq4_v2 -> EQ13 ; *_int inchangé
+}
+
+function aggregate(rows, keyFn){
+  const m = {};
+  rows.forEach(r => {
+    const k = keyFn(r) || '—';
+    if(!m[k]) m[k] = {nb:0, litres:0, montant:0};
+    m[k].nb++; m[k].litres += r.QttRecharge || 0; m[k].montant += montant(r);
+  });
+  return Object.entries(m)
+    .map(([k,v]) => [k, v.nb, Math.round(v.litres*10)/10, Math.round(v.montant)])
+    .sort((a,b) => b[3]-a[3]);
+}
+
+function sheetFromAgg(title, rows, header){
+  const tot = rows.reduce((s,r)=>[null, s[1]+r[1], Math.round((s[2]+r[2])*10)/10, s[3]+r[3]], [null,0,0,0]);
+  const aoa = [header, ...rows, ['TOTAL', tot[1], tot[2], tot[3]]];
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols'] = [{wch:32},{wch:14},{wch:14},{wch:18}];
+  return ws;
+}
+
+function exportXlsx(){
+  const rows = applyFilters();
+  const wb = XLSX.utils.book_new();
+
+  // 1. Par agent (équipe = personne)
+  const parAgent = aggregate(rows, r => r.agent);
+  XLSX.utils.book_append_sheet(wb,
+    sheetFromAgg('agent', parAgent, ['Agent', 'Nb recharges', 'Litres', 'Montant (FCFA)']),
+    'Par agent');
+
+  // 2. Par superviseur (compte EQ{n}_enq4_v2)
+  const parSup = aggregate(rows, r => supLabel(r.responsable));
+  XLSX.utils.book_append_sheet(wb,
+    sheetFromAgg('sup', parSup, ['Superviseur', 'Nb recharges', 'Litres', 'Montant (FCFA)']),
+    'Par superviseur');
+
+  // 3. Détail
+  const cols = ['Date','Région','Département','Lieu','Véhicule','Chauffeur','Carburant',
+                'Litres','Montant (FCFA)','Kilométrage','Agent','Superviseur','Statut'];
+  const det = rows.map(r => [
+    (r.date||'').slice(0,16), r.Region||'', r.Departement||'', r.LieuExact||'',
+    r.matricule||'', r.NomChauff||'', r.TypeCarburant||'',
+    r.QttRecharge||'', Math.round(montant(r))||'', r.Kilometrage||'',
+    r.agent||'', supLabel(r.responsable), r.status||''
+  ]);
+  const wsd = XLSX.utils.aoa_to_sheet([cols, ...det]);
+  wsd['!cols'] = cols.map((c,i)=>({wch: i===3?22:14}));
+  XLSX.utils.book_append_sheet(wb, wsd, 'Détail');
+
+  const d = new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb, `carburant_montants_${d}.xlsx`);
+}
+
 // Events
 ['#fRegion','#fType','#fResp','#fStatut'].forEach(s => $(s).addEventListener('change', render));
 $('#fSearch').addEventListener('input', render);
@@ -225,6 +285,7 @@ $('#resetBtn').addEventListener('click', () => {
 });
 $('#reloadBtn').addEventListener('click', load);
 $('#csvBtn').addEventListener('click', exportCsv);
+$('#xlsBtn').addEventListener('click', exportXlsx);
 
 async function loadFactures(){
   const card = $('#facturecard');

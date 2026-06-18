@@ -70,6 +70,7 @@ button.ghost:hover{border-color:var(--primary);background:var(--primary-soft)}
 .facmeta{color:var(--soft);font-size:12px;margin:12px 0 0}
 .tablecard{margin-bottom:30px}
 .tablehead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.tablebtns{display:flex;gap:8px;align-items:center}
 .tablewrap{overflow:auto;max-height:520px;border:1px solid var(--line);border-radius:10px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 thead th{position:sticky;top:0;background:var(--panel2);color:var(--muted);
