@@ -41,6 +41,11 @@ button.ghost{background:var(--panel);color:var(--primary);border:1px solid var(-
   border-radius:8px;padding:8px 14px;cursor:pointer;font-size:13px;height:37px;transition:.15s;font-weight:500}
 button.ghost:hover{border-color:var(--primary);background:var(--primary-soft)}
 
+.notice{background:rgba(199,123,48,.1);border:1px solid rgba(199,123,48,.35);
+  color:#8a5a1f;border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:13px}
+.notice b{color:var(--gas)}
+.row-aberr{color:var(--gas);font-weight:600}
+.row-aberr::after{content:" ⚠"}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:18px}
 .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
   padding:16px 18px;box-shadow:var(--shadow);border-left:3px solid var(--line)}

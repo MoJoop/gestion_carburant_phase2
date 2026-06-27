@@ -11,6 +11,11 @@ let charts = {};        // instances Chart.js
 
 const $ = s => document.querySelector(s);
 
+// Valeurs aberrantes : quantité de carburant > 1000 L (saisie erronée, ex. montant
+// saisi dans le champ quantité). Exclues des totaux / graphiques / Excel.
+const SEUIL_LITRES = 1000;
+const isAberrant = r => (r.QttRecharge || 0) > SEUIL_LITRES;
+
 function montant(r){ return (r.MontRecharge != null ? r.MontRecharge : (r.MontRechargeCalc || 0)); }
 function jour(r){
   const d = r.date || r.lastEntryDate || '';
@@ -74,13 +79,28 @@ function groupSum(rows, key, valFn){
 
 function render(){
   const rows = applyFilters();
-  renderKpis(rows);
-  renderRegion(rows);
-  renderType(rows);
-  renderTime(rows);
-  renderVeh(rows);
-  renderResp(rows);
-  renderTable(rows);
+  const valid = rows.filter(r => !isAberrant(r));   // agrégats : hors aberrants
+  renderNotice(rows.length - valid.length);
+  renderKpis(valid);
+  renderRegion(valid);
+  renderType(valid);
+  renderTime(valid);
+  renderVeh(valid);
+  renderResp(valid);
+  renderTable(rows);                                 // tableau : tout, signalé
+}
+
+function renderNotice(nbAberr){
+  const el = $('#notice');
+  if(nbAberr > 0){
+    el.hidden = false;
+    el.innerHTML = `⚠ <b>${nbAberr}</b> recharge${nbAberr>1?'s':''} ` +
+      `avec une quantité &gt; ${FMT.format(SEUIL_LITRES)} L (saisie aberrante) ` +
+      `exclue${nbAberr>1?'s':''} des totaux et graphiques. ` +
+      `Elle${nbAberr>1?'s':''} reste${nbAberr>1?'nt':''} visible${nbAberr>1?'s':''} dans le tableau (marquée ⚠).`;
+  } else {
+    el.hidden = true;
+  }
 }
 
 function renderKpis(rows){
@@ -192,7 +212,7 @@ function renderTable(rows){
     <td>${cell(r.Region)}</td><td>${cell(r.Departement)}</td><td>${cell(r.LieuExact)}</td>
     <td>${cell(r.matricule)}</td><td>${cell(r.NomChauff)}</td>
     <td>${carb(r.TypeCarburant)}</td>
-    <td class="num">${r.QttRecharge!=null?num1(r.QttRecharge):'<span class="empty">—</span>'}</td>
+    <td class="num ${isAberrant(r)?'row-aberr':''}"${isAberrant(r)?' title="Quantité aberrante, exclue des totaux"':''}>${r.QttRecharge!=null?num1(r.QttRecharge):'<span class="empty">—</span>'}</td>
     <td class="num">${montant(r)?money(montant(r)):'<span class="empty">—</span>'}</td>
     <td class="num">${r.Kilometrage!=null?FMT.format(r.Kilometrage):'<span class="empty">—</span>'}</td>
     <td>${cell(r.agent)}</td><td>${cell(r.responsable)}</td><td>${badge(r.status)}</td>
@@ -245,16 +265,17 @@ function sheetFromAgg(title, rows, header){
 
 function exportXlsx(){
   const rows = applyFilters();
+  const valid = rows.filter(r => !isAberrant(r));   // agrégats hors aberrants
   const wb = XLSX.utils.book_new();
 
   // 1. Par agent (équipe = personne)
-  const parAgent = aggregate(rows, r => r.agent);
+  const parAgent = aggregate(valid, r => r.agent);
   XLSX.utils.book_append_sheet(wb,
     sheetFromAgg('agent', parAgent, ['Agent', 'Nb recharges', 'Litres', 'Montant (FCFA)']),
     'Par agent');
 
   // 2. Par superviseur (compte EQ{n}_enq4_v2)
-  const parSup = aggregate(rows, r => supLabel(r.responsable));
+  const parSup = aggregate(valid, r => supLabel(r.responsable));
   XLSX.utils.book_append_sheet(wb,
     sheetFromAgg('sup', parSup, ['Superviseur', 'Nb recharges', 'Litres', 'Montant (FCFA)']),
     'Par superviseur');
